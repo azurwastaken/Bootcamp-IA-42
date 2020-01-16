@@ -25,6 +25,8 @@ class Bank(object):
 			@amount: float(amount) amount to transfer
 			@return         True if success, False if an error occured
 		"""
+		
+
 	def fix_account(self, account):
 		"""
 			fix the corrupted account
