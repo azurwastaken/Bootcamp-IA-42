@@ -16,7 +16,7 @@ def vec_gradient(x, y, theta):
 	"""
 	parenthesis = np.subtract(x.dot(theta), y)
 	coef = x.dot(1/x.shape[0])
-	return parenthesis.dot(coef)
+	return np.transpose(coef).dot(parenthesis)
 
 
 def main():
