@@ -16,8 +16,16 @@ class MyLinearRegression():
 		"""
 		self.theta = theta
 	
+	@staticmethod
+	def arrange_X(X):
+		"""
+		To write.
+		"""
+		line_of_1 = np.full((np.shape(X)[0], 1), fill_value=1)
+		arranged_X = np.append(line_of_1, X, axis=1)
+		return arranged_X
+ 
 	def predict_(self, X):
-		
 		"""
 		Description:
 			Prediction of output using the hypothesis function (linear model).
@@ -30,11 +38,11 @@ class MyLinearRegression():
 		Raises:
 			This function should not raise any Exception.
 		"""
-		line_of_1 = np.full((np.shape(X)[0], 1), fill_value=1)
-		arranged_X = np.append(line_of_1, X, axis=1)
+		arranged_X = MyLinearRegression.arrange_X(X)
 		try:
 			predicted = np.dot(arranged_X, self.theta)
-		except:
+		except Exception as e:
+			print(str(e), end="\n\n")
 			return None
 		return predicted
 	
@@ -75,15 +83,31 @@ class MyLinearRegression():
 		return np.sum(self.cost_elem_(X, Y))
 	
 	def fit_(self, X, Y, alpha=0.1, n_cycle=1000):
-		m = len(Y)
-		thetatmp = self.theta
-		line_of_1 = np.full((np.shape(X)[0], 1), fill_value=1)
-		X = np.append(line_of_1, X, axis=1)
-		for i in range(n_cycle):
-			prediction = np.dot(X,thetatmp)
-			thetatmp -= (0.5/m) * alpha * ( X.T.dot((prediction - Y)))
-			
-		return thetatmp
+		"""
+		Description:
+			Performs a fit of Y(output) with respect to X.
+		Args:
+			X: has to be a numpy.ndarray, a matrix of dimension
+			   (number of training examples, number of features).
+			Y: has to be a numpy.ndarray, a vector of dimension
+			   (number of training examples, 1).
+		Returns:
+			None if there is a matching dimension problem.
+		Raises:
+			This function should not raise any Exception.
+		"""
+		M = len(Y)
+		arranged_X = MyLinearRegression.arrange_X(X)
+		arranged_X_T = arranged_X.transpose()
+		for _ in range(n_cycle):
+      
+			predicted = self.predict_(X)
+			if predicted is None:
+				return None
+			h_theta = predicted - Y
+			sum_x = np.sum((np.dot(arranged_X_T, h_theta)), keepdims=True, axis=1)
+			tmp = ((0.5 * alpha) / M) * sum_x
+			self.theta = np.subtract(self.theta, tmp)
 
 	def mse_(self, y, y_hat):
 		ADELDIFFERENCE = np.subtract(y, y_hat)

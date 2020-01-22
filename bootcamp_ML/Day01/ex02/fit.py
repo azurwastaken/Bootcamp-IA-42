@@ -60,7 +60,7 @@ def fit_(theta, X, Y, alpha=0.1, n_cycle=1000):
 	X = np.append(line_of_1, X, axis=1)
 	for i in range(n_cycle):
 		prediction = np.dot(X,theta)
-		theta = theta -(1/m)*alpha*( X.T.dot((prediction - Y)))
+		theta = theta -(0.5/m)*alpha*( X.T.dot((prediction - Y)))
 		
 	return theta
 

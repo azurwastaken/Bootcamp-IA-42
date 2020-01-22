@@ -2,13 +2,14 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error
 from mylinearregression import MyLinearRegression as MyLR
-from linear_model import plot_model
+from linear_model import plot_model, plot_cost_fct_byTheta
 
 
 CSV_FILE = '../resources/are_blue_pills_magics.csv'
 
 if __name__ == "__main__":
     data = pd.read_csv(CSV_FILE)
+    print(np.array(data))
     Xpill = np.array(data['Micrograms']).reshape(-1, 1)
     Yscore = np.array(data['Score']).reshape(-1, 1)
 
@@ -30,3 +31,4 @@ if __name__ == "__main__":
     print(linear_model2.mse_(Yscore, Y_model_trained))  # 232.16344285714285
     print(mean_squared_error(Yscore, Y_model_trained))  # 232.16344285714285
     plot_model(Xpill, Yscore, Y_model_trained)
+    plot_cost_fct_byTheta(linear_model_trained, Xpill, Yscore, 1)
