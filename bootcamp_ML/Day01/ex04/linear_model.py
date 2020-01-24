@@ -1,23 +1,21 @@
- 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
+from mylinearregression import MyLinearRegression as MyLR
 
-def plot_cost_fct_byTheta(model, X, Y, id_thet):
-    min_val = model.theta[id_thet]
-    cost_fct = []
-    range_value = np.arange(min_val - 50, min_val + 50, 0.1)
-    for i in range_value:
-        model.theta[id_thet] = i
-        cost_fct.append(model.cost_(X, Y))
-    plt.plot(list(range_value),cost_fct)
-    plt.show()
-    model.theta[id_thet] = min_val
+data = pd.read_csv("../day01/resources/are_blue_pills_magics.csv")
+Xpill = np.array(data["Micrograms"]).reshape(-1,1)
+Yscore = np.array(data["Score"]).reshape(-1,1)
 
-def plot_model(X, Y, models):
-	plt.scatter(X, Y, color="g")
-	plt.xlabel("Quantity of bluepill")
-	plt.ylabel("Space driving score")
-	plt.plot(X, models, color="blue", label="menfou")
-	plt.legend()
-	plt.show()
+linear_model1 = MyLR(np.array([[89.0], [-8]]))
+linear_model2 = MyLR(np.array([[89.0], [-6]]))
+Y_model1 = linear_model1.predict_(Xpill)
+Y_model2 = linear_model2.predict_(Xpill)
+
+print(linear_model1.mse_(linear_model1.predict_(Xpill), Yscore))
+# 57.60304285714282
+print(mean_squared_error(Yscore, Y_model1))
+# 57.603042857142825
+print(linear_model2.mse_(linear_model2.predict_(Xpill), Yscore))
+# 232.16344285714285
+print(mean_squared_error(Yscore, Y_model2))
